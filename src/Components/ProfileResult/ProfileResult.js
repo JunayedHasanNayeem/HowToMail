@@ -15,14 +15,9 @@ import { Box } from '@mui/system';
 
 
 const ProfileResult = (props) => {
-    const profile = props.profile;
-    if(!profile){
-        return(
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <CircularProgress />
-            </Box>
-        )
-    }
+    const {profile, isLoading} = props;
+    
+    
     return (
         <div>
             <Card sx={{ maxWidth: 345, m: 3 }}>

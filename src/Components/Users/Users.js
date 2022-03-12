@@ -1,7 +1,6 @@
 import { Button, Card, CircularProgress, Container, Grid, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useRef, useState } from 'react';
-import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import useAuth from '../../Hooks/useAuth';
 
 const Users = () => {
@@ -10,7 +9,7 @@ const Users = () => {
     const [clicked, setClicked] = useState(0)
     const [usersLoading, setusersLoading] = useState(true);
     useEffect(() => {
-        fetch('http://localhost:5000/users')
+        fetch('https://howtomail.herokuapp.com/users')
             .then(res => res.json())
             .then(data => {
                 setUsers(data)
@@ -20,12 +19,12 @@ const Users = () => {
     }, [clicked])
 
     const creditsRef = useRef()
-    const handleAddCredits = (e) => {
+    const handleAddCredits = (userEmail) => {
         const creditsData = {
             credits: creditsRef.current.value,
-            email: user?.email
+            email: userEmail
         };
-        fetch('http://localhost:5000/users/add-credits', {
+        fetch('https://howtomail.herokuapp.com/users/add-credits', {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json"
@@ -35,7 +34,6 @@ const Users = () => {
         .then(res => res.json())
         .then(data => setClicked(data.currentCredits))
 
-        e.preventDefault()
         alert("Credits added successfully!")
         document.addCreditsForm.reset()
 
@@ -77,7 +75,7 @@ const Users = () => {
                                 <span style={{marginRight: '10px'}}>
                                     Credits: {user?.credits}
                                 </span>
-                                <form name="addCreditsForm" onSubmit={handleAddCredits} >
+                                <form name="addCreditsForm" onSubmit={() => {handleAddCredits(user.email)}}>
                                     <TextField
                                         sx={{ m: 1, width: '12ch' }}
                                         label="Credits"

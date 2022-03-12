@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileSearch from '../../Components/ProfileSearch/ProfileSearch';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
@@ -7,10 +7,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -28,15 +26,34 @@ import ComingSoon from '../../Components/ComingSoon/ComingSoon';
 import useAuth from '../../Hooks/useAuth';
 import DashboardHome from '../../Components/DashboardHome/DashboardHome';
 import Users from '../../Components/Users/Users';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import StarBorderPurple500OutlinedIcon from '@mui/icons-material/StarBorderPurple500Outlined';
+import logo from '../../Images/icon.png'
 
 const drawerWidth = 240;
 
 const Dashboard = (props) => {
+    //Use Auth
+    const { logOut, user, admin } = useAuth()
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
-
-    //Use Auth
-    const {logOut} = useAuth()
+    const [credits, setCredits] = useState(0)
+    useEffect(() => {
+        fetch("https://howtomail.herokuapp.com/users")
+            .then(res => res.json())
+            .then(data => {
+                
+                const foundUser = data.find(eachUser => eachUser.email == user?.email)
+                let availableCredits;
+                if(foundUser.credits){
+                    availableCredits = foundUser?.credits;
+                }else{
+                    availableCredits = 0;
+                }
+                setCredits(availableCredits)
+                
+            })
+    }, [])
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -45,7 +62,7 @@ const Dashboard = (props) => {
 
     const drawer = (
         <div>
-            <Toolbar />
+            <img src={logo} style={{width:'56px', height:'56px', marginLeft:'15px'}} />
             <Divider />
             <List>
                 <Link to={`${url}`} style={{ textDecoration: 'none', color: '#000000' }}>
@@ -72,13 +89,33 @@ const Dashboard = (props) => {
                         <ManageAccountsIcon sx={{ mr: 2 }} />
                         <ListItemText primary="Account" />
                     </ListItem>
-                    <ListItem button onClick={logOut}>
-                        <LogoutIcon sx={{ mr: 2 }} />
-                        <ListItemText primary="Log Out" />
-                    </ListItem>
                 </Link>
+                {
+                    admin ?
+                        <span>
+                            <Link to={`${url}/manage-users`} style={{ textDecoration: 'none', color: '#000000' }}>
+                                <ListItem button >
+                                    <PeopleAltOutlinedIcon sx={{ mr: 2 }} />
+                                    <ListItemText primary="Manage Users" />
+                                </ListItem>
+                            </Link>
+                        </span>
+                        :
+                        <span></span>
+                }
+
+                <ListItem button onClick={logOut}>
+                    <LogoutIcon sx={{ mr: 2 }} />
+                    <ListItemText primary="Log Out" />
+                </ListItem>
+                <ListItem>
+                    <StarBorderPurple500OutlinedIcon sx={{ mr: 2 }} />
+
+                    <ListItemText primary={`Search Credits: ${credits}`} />
+                </ListItem>
+
             </List>
-        </div>
+        </div >
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -92,6 +129,7 @@ const Dashboard = (props) => {
                     width: { sm: `calc(100% - ${drawerWidth}px)` },
                     ml: { sm: `${drawerWidth}px` },
                 }}
+
             >
                 <Toolbar>
                     <IconButton
@@ -157,7 +195,7 @@ const Dashboard = (props) => {
                         <ComingSoon></ComingSoon>
                     </Route>
                     <Route path={`${path}/manage-users`}>
-                        <Users></Users>   
+                        <Users></Users>
                     </Route>
                 </Switch>
 

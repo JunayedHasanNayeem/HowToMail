@@ -7,6 +7,4 @@ const firebaseConfig = {
   appId: "1:125942507388:web:a05c817a7782490def66f9"
 };
 
-console.log(process.env)
-
 export default firebaseConfig;
