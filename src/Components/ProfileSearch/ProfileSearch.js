@@ -49,13 +49,13 @@ const ProfileSearch = () => {
             })
         e.preventDefault()
     }
-    
+
     return (
         <div>
             <div className="profile-search-bar-container">
                 <Container className="profile-search-bar">
                     <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
-                        Find anyone's professioal information in seconds
+                        Find anyone's professional information in seconds
                     </Typography><br />
                     <form onSubmit={handleProfileSearch} name="profileSearchForm">
                         <TextField
@@ -80,7 +80,7 @@ const ProfileSearch = () => {
             </div>
             {
                 isLoading ?
-                    <Box sx={{ m:3, width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <Box sx={{ m: 3, width: '100%', display: 'flex', justifyContent: 'center' }}>
                         <CircularProgress />
                     </Box> :
                     <Container>

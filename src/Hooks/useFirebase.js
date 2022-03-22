@@ -37,7 +37,7 @@ const useFirebase = () => {
             setUser(user)
             setUserName(fullName)
             setErrorMessage('');
-            saveUser(fullName, user.email, user.metadata, "POST")
+            saveUser(fullName, user.email, user.metadata.creationTime, "POST")
             history.push(redirect_uri)
             window.location.reload();
         })

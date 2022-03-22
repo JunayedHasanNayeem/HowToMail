@@ -29,6 +29,8 @@ import Users from '../../Components/Users/Users';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import StarBorderPurple500OutlinedIcon from '@mui/icons-material/StarBorderPurple500Outlined';
 import logo from '../../Images/icon.png'
+import AdminRoute from '../../Components/SignIn/AdminRoute'
+import Demo from '../../Components/Demo/Demo';
 
 const drawerWidth = 240;
 
@@ -194,9 +196,9 @@ const Dashboard = (props) => {
                     <Route path={`${path}/coming-soon`}>
                         <ComingSoon></ComingSoon>
                     </Route>
-                    <Route path={`${path}/manage-users`}>
+                    <AdminRoute path={`${path}/manage-users`}>
                         <Users></Users>
-                    </Route>
+                    </AdminRoute>
                 </Switch>
 
             </Box>

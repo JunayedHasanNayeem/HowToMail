@@ -13,6 +13,7 @@ const Users = () => {
             .then(res => res.json())
             .then(data => {
                 setUsers(data)
+                console.log(data)
                 setusersLoading(false)
             });
 
@@ -38,16 +39,15 @@ const Users = () => {
         document.addCreditsForm.reset()
 
     }
-
-    //Conditional Spinner
-    if (usersLoading) {
-        return (
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <CircularProgress />
-            </Box>
-        )
-
-    }
+        //Conditional Spinner
+        if (usersLoading) {
+            return (
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <CircularProgress />
+                </Box>
+            )
+    
+        }
 
     return (
         <Container>
@@ -56,7 +56,7 @@ const Users = () => {
             </Typography>
             {
                 users.map(user =>
-                    <Card variant="outlined" sx={{ mb: 1 }} key={user._id}>
+                    <Card variant="outlined" sx={{ mb: 1 }} >
                         <Grid container columns={{ xs: 6, md: 12 }} sx={{ p: 2 }}>
                             <Grid item xs={6} md={6}>
                                 <Typography variant="h6" component="div">
@@ -87,8 +87,6 @@ const Users = () => {
                                 </form>
 
                             </Grid>
-
-
                         </Grid>
                     </Card>
                 )
